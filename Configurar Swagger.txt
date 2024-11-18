@@ -1,0 +1,34 @@
+1º Instalação: dotnet add package Swashbuckle.AspNetCore
+
+2º Realizar importação:
+// Importar OpenApi
+using Microsoft.OpenApi.Models;
+
+3º Configuração base do Swagger:
+// Configura o Swagger
+// AddEndpointsApiExplorer: permite a geração automática de documentação para endpoints da API.
+builder.Services.AddEndpointsApiExplorer();
+
+// AddSwaggerGen: adiciona os serviços necessários para gerar a documentação do Swagger.
+builder.Services.AddSwaggerGen(c =>
+{
+    // Define um documento Swagger chamado "v1"
+    c.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "Minha API", // Título da API
+        Version = "v1",      // Versão da API
+        Description = "Uma API para gerenciar um CRUD de pessoas." // Descrição da API
+    });
+});
+
+4º Configurar rota:
+// Configura o Swagger UI
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    // Define a rota onde o Swagger JSON estará disponível
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
+    
+    // Define a rota do Swagger UI como a raiz do aplicativo
+    c.RoutePrefix = "swagger"; // Assim, você acessa o Swagger UI em http://localhost:<porta>
+});
